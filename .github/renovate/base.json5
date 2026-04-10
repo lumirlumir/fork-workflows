@@ -33,6 +33,7 @@
       description: "Pin prettier",
       matchPackageNames: ["prettier"],
       rangeStrategy: "pin",
+      automerge: true,
     },
   ],
 }
