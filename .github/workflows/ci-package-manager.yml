@@ -10,6 +10,12 @@ name: ci-package-manager
 
 on:
     workflow_call:
+        inputs:
+            pnpm_allow_build_args:
+                required: false
+                description: The arguments to use for `--allow-build` when installing with pnpm.
+                default: ''
+                type: string
 
 jobs:
     build-tarball:
@@ -141,7 +147,9 @@ jobs:
                   auto-install-peers=true
                   node-linker=hoisted
                   EOT
-                  pnpm add ./*.tgz -D
+                  pnpm add ${PNPM_ALLOW_BUILD_ARGS} ./*.tgz -D
+              env:
+                  PNPM_ALLOW_BUILD_ARGS: ${{ case(inputs.pnpm_allow_build_args != '', format('--allow-build={0}', inputs.pnpm_allow_build_args), '') }}
 
     bun-install:
         needs: build-tarball
